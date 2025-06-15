@@ -1,0 +1,11 @@
+{
+  "subjects": [
+    {
+      "id": "ad04b485-34c2-4a92-be61-10af0395433b",
+      "name": "Alois",
+      "age": 22,
+      "weight": 75,
+      "sport": 3
+    }
+  ]
+}
