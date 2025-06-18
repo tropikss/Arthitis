@@ -1,0 +1,20 @@
+meta {
+  name: create subject
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/subjects
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name":"Alois",
+    "age":22,
+    "weight":75,
+    "sport":3
+  }
+}

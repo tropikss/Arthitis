@@ -1,0 +1,18 @@
+meta {
+  name: create test
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/tests
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "subject_id":"f2a222ac-9d5b-4d82-9776-ac432d365232",
+    "tags":{"elevation":10}
+  }
+}

@@ -1,0 +1,21 @@
+meta {
+  name: edit subject
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:3000/subjects/7cbe02f8-047a-44f5-9075-81ddf5f620fb
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name":"Lisandro",
+    "age":22,
+    "weight":65,
+    "sport":3,
+    "height":172
+  }
+}

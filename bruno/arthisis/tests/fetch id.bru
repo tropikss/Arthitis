@@ -1,0 +1,17 @@
+meta {
+  name: fetch id
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/tests/by-subject
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "subject_id":"5ed9f18f-e081-4ba7-9cc4-a247ab376ea6"
+  }
+}

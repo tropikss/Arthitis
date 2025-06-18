@@ -1,0 +1,18 @@
+meta {
+  name: create category
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/category
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name":"pratique sportive",
+    "color":"#757824"
+  }
+}

@@ -13,7 +13,6 @@ function DeviceState({}) {
           </div>
         </div>
       </>
-
     );
 }
 

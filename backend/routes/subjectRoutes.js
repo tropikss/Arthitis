@@ -30,4 +30,16 @@ router.delete('/:id', async (req, res) => {
   res.json({ ok: true, message: 'Subject deleted successfully' })
 })
 
+router.put('/:id', async (req, res) => {
+  const id = req.params.id
+  const updatedSubject = req.body
+  const index = db.data.subjects.findIndex(u => u.id === id)
+  if (index === -1) {
+    return res.status(404).json({ error: 'Subject not found' })
+  }
+  db.data.subjects[index] = { ...db.data.subjects[index], ...updatedSubject }
+  await db.write()
+  res.json({ ok: true, message: 'Subject updated successfully' })
+})
+
 export default router

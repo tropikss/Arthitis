@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "arthisis",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -13,3 +13,15 @@
     /* --color-rich_black: { DEFAULT: '#0d1b2a', 100: '#030609', 200: '#050b11', 300: '#08111a', 400: '#0b1622', 500: '#0d1b2a', 600: '#234870', 700: '#3875b6', 800: '#74a3d4', 900: '#bad1ea' },
     --color-oxford_blue: { DEFAULT: '#001f3f', 100: '#00122a', 200: '#001b33', 300: '#00243d', 400: '#002c46', 500: '#00354f', 600: '#004a6a', 700: '#005e85', 800: '#0071a0', 900: '#0085bb' }, */
 }
+
+@layer utilities {
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .no-spinner {
+    -moz-appearance: textfield;
+  }
+}
