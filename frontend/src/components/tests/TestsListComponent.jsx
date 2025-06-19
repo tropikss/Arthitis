@@ -6,32 +6,56 @@ import { useState } from "react";
 import DeleteTestConfirmation from "./DeleteTestConfirmation";
 import { useBluetooth } from '../bluetooth/useBluetooth';
 
-export default function TestsListComponent({recordingSubject}) {
+export default function TestsListComponent({recordingSubject, setDifferentTest}) {
     const { deleteTest } = useTests();
     const [toDeleteTest, setToDeleteTest] = useState(false);
     const { fetchTestsBySubject, selectedSubjectTests } = useTests();
     const { recordingState } = useBluetooth();
 
-    useEffect(() => {
-        if (recordingState === "RECORD_SAVED") {
-            if (recordingSubject) {
-                fetchTestsBySubject(recordingSubject.id);
-            }
-        }
-    }, [recordingState]);
-
-    useEffect(() => {
+    const updateTests = async() => {
         if (recordingSubject) {
             fetchTestsBySubject(recordingSubject.id);
         }
+    }
+
+    useEffect(() => {
+        updateTests();
+    }, [recordingState]);
+
+    useEffect(() => {
+        updateTests();
     }, [recordingSubject]);
+
+    useEffect(() => {
+        setDifferentTest(countDifferentTests);
+    }, [selectedSubjectTests]);
+
+    const countDifferentTests = () => {
+        if (!selectedSubjectTests) return 0;
+
+        const seen = [];
+
+        for (let i = 0; i < selectedSubjectTests.length; i++) {
+            const current = selectedSubjectTests[i].tags;
+
+            const alreadyExists = seen.some(t =>
+                t.inclinaison === current.inclinaison &&
+                t.weighted === current.weighted &&
+                t.speed === current.speed
+            );
+
+            if (!alreadyExists) {
+                seen.push(current);
+            }
+        }
+        return seen.length;
+    };
+
 
     const handleDeleteTest = async() => {
         await deleteTest(toDeleteTest.id)
         setToDeleteTest(false);
-        if (recordingSubject) {
-            fetchTestsBySubject(recordingSubject.id);
-        }
+        updateTests();
     }
 
     return (

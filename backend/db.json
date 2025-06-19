@@ -78,6 +78,16 @@
         "speed": 15,
         "weighted": false
       }
+    },
+    {
+      "id": "f53cfd0b-b1d1-4cef-a804-a442f3fec20a",
+      "record_id": "9f9cf7d7-bdcf-49a4-9849-e571b49aca6a",
+      "subject_id": "968cc0d5-3ff1-44b3-bc2d-9a8c839431d9",
+      "tags": {
+        "inclinaison": -10,
+        "speed": 15,
+        "weighted": true
+      }
     }
   ],
   "tags": [
