@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
     console.log('test', test)
   db.data.tests.push(test)
   await db.write()
-  res.status(201).json({id:test.id})
+  res.status(201).json({record_id:test.record_id})
 })
 
 router.delete('/:id', async (req, res) => {

@@ -94,7 +94,7 @@ export default function TestsListComponent({recordingSubject, setDifferentTest})
                 </table> 
             </div>
         ) : (
-            <div className="text-center text-gray-500">No subject selected</div>
+            <div className="text-center text-gray-500 w-full">No subject selected</div>
         )}
         {toDeleteTest != false && (
             <DeleteTestConfirmation 

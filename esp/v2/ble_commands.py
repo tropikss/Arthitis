@@ -2,6 +2,7 @@
 import os
 import uos
 import uasyncio as asyncio
+from sd_manager import get_all_wav
 
 def is_binary_file(filepath):
     ext = filepath.rsplit('.', 1)[-1].lower()
@@ -19,6 +20,8 @@ async def handle_command_wrapper(service, conn, cmd):
         await handle_stop_recording(service, conn)
     elif cmd.startswith("DELETE"):
         await handle_DELETE(service, conn, cmd[7:])
+    elif cmd.startswith("GET_ALL_RECORD"):
+        await handle_GET_ALL_RECORD(service, conn)
     else:
         await send_status(service, conn, "CMD_NOT_FOUND")
 
@@ -36,6 +39,15 @@ async def send_status(service, conn, msg):
             msg = msg.encode()
         await service.char_status.write(msg, send_update=True)
     except:
+        pass
+
+async def send_filesystem(service, conn, msg):
+    try:
+        print("Filesystem ->", msg)
+        if isinstance(msg, str):
+            msg = msg.encode()
+        await service.char_filesystem.write(msg, send_update=True)
+    except Exception as e:
         pass
 
 async def handle_LIST(service, conn, path):
@@ -104,4 +116,22 @@ async def handle_DELETE(service, conn, path):
             os.remove(full_path)
         await send_status(service, conn, "DELETED " + path.strip("/"))
     except Exception as e:
+        await send_status(service, conn, "ERR:" + str(e))
+
+async def handle_GET_ALL_RECORD(service, conn):
+    try:
+        wav_files = get_all_wav()
+        if not wav_files:
+            await send_filesystem(service, conn, "NO_RECORDS")
+            return
+        print("WAV files found:", wav_files)
+        await send_filesystem(service, conn, "GET_ALL_RECORD START")
+        for fname in wav_files:
+            await send_filesystem(service, conn, f"GET_ALL_RECORD FILE:{fname}")
+        await asyncio.sleep_ms(50)
+        await send_filesystem(service, conn, "GET_ALL_RECORD END")
+        await send_status(service, conn, "OK")
+    except Exception as e:
+        print("Error in GET_ALL_RECORD:", e)
+        await send_filesystem(service, conn, "GET_ALL_RECORD ERROR")
         await send_status(service, conn, "ERR:" + str(e))

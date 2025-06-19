@@ -67,6 +67,20 @@ export function TestsProvider({ children }) {
     return updated;
   }
 
+  async function compareRecordIds(recordIds) {
+    await fetchTests(); // Ensure tests are fetched before comparison
+    
+    const dbRecordIds = tests.map(test => test.record_id);
+
+    // Not in DB: present in recordIds but not in dbRecordIds
+    const notInDb = recordIds.filter(id => !dbRecordIds.includes(id));
+
+    // Not on SD: present in dbRecordIds but not in recordIds
+    const notOnSd = dbRecordIds.filter(id => !recordIds.includes(id));
+
+    return { notInDb, notOnSd };
+  }
+
   useEffect(() => {
     fetchTests();
   }, []);
@@ -80,7 +94,8 @@ export function TestsProvider({ children }) {
       deleteTest,
       updateTest,
       fetchTestsBySubject,
-      selectedSubjectTests
+      selectedSubjectTests,
+      compareRecordIds
     }}>
       {children}
     </TestsContext.Provider>

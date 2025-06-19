@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SubjectTab from "../explorer/SubjectTab";
 import RecordTab from "../record/RecordTab"; // Assuming you have a RecordTab component
+import EspComponent from "../esp/EspComponent";
 
 function TabComponent() {
   const [activeTab, setActiveTab] = useState('subjects');
@@ -40,10 +41,27 @@ function TabComponent() {
             Record
           </a>
         </li>
+        <li className="me-2">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveTab('esp');
+            }}
+            className={`inline-block p-4 rounded-t-lg ${
+              activeTab === 'esp'
+                ? 'text-blue-600 bg-gray-100 dark:bg-gray-800 dark:text-blue-500'
+                : 'hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
+            }`}
+          >
+            Esp32
+          </a>
+        </li>
       </ul>
 
       {activeTab === 'subjects' && <SubjectTab />}
       {activeTab === 'record' && <RecordTab/>}
+      {activeTab === 'esp' && <EspComponent />}
     </>
   );
 }

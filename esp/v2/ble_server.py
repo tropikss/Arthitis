@@ -17,11 +17,13 @@ class BLEFileService:
         self.command_uuid = bluetooth.UUID("12345678-1234-5678-1234-56789abcdef1")
         self.record_out_uuid = bluetooth.UUID("12345678-1234-5678-1234-56789abcdef2")
         self.status_uuid = bluetooth.UUID("12345678-1234-5678-1234-56789abcdef3")
+        self.filesystem_uuid = bluetooth.UUID("12345678-1234-5678-1234-56789abcdef4")
 
         self.service = aioble.Service(self.service_uuid)
         self.char_command = aioble.Characteristic(self.service, self.command_uuid, write=True, notify=True, capture=True)
         self.char_record_out = aioble.Characteristic(self.service, self.record_out_uuid, notify=True)
         self.char_status = aioble.Characteristic(self.service, self.status_uuid, notify=True)
+        self.char_filesystem = aioble.Characteristic(self.service, self.filesystem_uuid, read=True, write=True, notify=True)
 
         aioble.register_services(self.service)
 

@@ -11,11 +11,14 @@ export function BluetoothProvider({ children }) {
   const [serviceChar, setServiceChar] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recordingState, setRecordingState] = useState({});
+  const [sdRecords, setSdRecords] = useState([]);
+  const [getAllSdRecords, setGetAllSdRecords] = useState(false); 
 
   const SERVICE_UUID = '12345678-1234-5678-1234-56789abcdef0';
   const COMMAND_UUID = '12345678-1234-5678-1234-56789abcdef1';
   const RECORD_UUID = '12345678-1234-5678-1234-56789abcdef2';
   const STATUS_UUID = '12345678-1234-5678-1234-56789abcdef3';
+  const FILESYSTEM_UUID = '12345678-1234-5678-1234-56789abcdef4';
 
   const connect = async () => {
     try {
@@ -31,6 +34,7 @@ export function BluetoothProvider({ children }) {
     const characteristic = await service.getCharacteristic(COMMAND_UUID);
     const recordChar = await service.getCharacteristic(RECORD_UUID);
     const statusChar = await service.getCharacteristic(STATUS_UUID);
+    const filesystemChar = await service.getCharacteristic(FILESYSTEM_UUID);
 
     recordChar.startNotifications();
     recordChar.addEventListener('characteristicvaluechanged', (event) => {
@@ -62,6 +66,33 @@ export function BluetoothProvider({ children }) {
           console.log('Commande inconnue :', value);
       }
     });
+
+    filesystemChar.startNotifications();
+    filesystemChar.addEventListener('characteristicvaluechanged', (event) => {
+      const value = new TextDecoder().decode(event.target.value);
+      console.log('Données entrantes FILESYSTEM UUID :', value);
+
+      if (value.startsWith('GET_ALL_RECORD FILE:')) {
+        // Extraction du nom de fichier
+        let fileName = value.split(':')[1];
+        if (fileName.endsWith('.wav')) {
+          fileName = fileName.slice(0, -4);
+        }
+        console.log('Fichier trouvé :', fileName);
+        setSdRecords(prevRecords => [...prevRecords, fileName]);
+      } else if (value.startsWith('GET_ALL_RECORD START')) {
+        setGetAllSdRecords(true);
+        setSdRecords([]); 
+      } else if (value.startsWith('GET_ALL_RECORD END')) {
+        setGetAllSdRecords(false);
+      } else if (value.startsWith('GET_ALL_RECORD ERROR')) {
+        setGetAllSdRecords(false);
+      } else if(value.startsWith('NO_RECORDS')) {
+        setGetAllSdRecords(false);
+        setSdRecords([]); // Réinitialiser si aucun enregistrement trouvé
+        console.log('Aucun enregistrement trouvé sur la carte SD');
+      }
+      });
 
     statusChar.startNotifications();
     statusChar.addEventListener('characteristicvaluechanged', (event) => {
@@ -132,7 +163,7 @@ export function BluetoothProvider({ children }) {
     if (test !== undefined) { 
       console.log(test)
       try {
-        await sendCommand('START_RECORDING ' + test.id);
+        await sendCommand('START_RECORDING ' + test.record_id);
       } catch (err) {
         console.error('Erreur démarrage enregistrement :', err);
       }
@@ -153,6 +184,33 @@ export function BluetoothProvider({ children }) {
     }
   };
 
+  const startGetAllSdRecords = async () => {
+    if (!device || !device.gatt.connected) {
+      console.warn('Aucun appareil connecté');
+      return;
+    }
+
+    try {
+      await sendCommand('GET_ALL_RECORDS');
+      console.log('Démarrage récupération des enregistrements SD');
+    } catch (err) {
+      console.error('Erreur démarrage récupération SD :', err);
+    }
+  };
+
+  const sendDeleteCommand = async(filename) => {
+    if(!device || !device.gatt.connected) {
+      console.warn('Aucun appareil connecté');
+      return;
+    }
+    try {
+      await sendCommand('DELETE ' + filename);
+      console.log('Fichier supprimé :', filename);
+    } catch (err) {
+      console.error('Erreur suppression fichier :', err);
+    }
+  }
+
   const disconnect = () => {
     if (device && device.gatt.connected) {
       device.gatt.disconnect();
@@ -171,7 +229,10 @@ export function BluetoothProvider({ children }) {
       startRecordingCommand,
       stopRecordingCommand,
       isRecording,
-      recordingState
+      recordingState,
+      startGetAllSdRecords,
+      sdRecords,
+      sendDeleteCommand
     }}>
       {children}
     </BluetoothContext.Provider>
