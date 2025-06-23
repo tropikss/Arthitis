@@ -25,8 +25,8 @@ def get_all_wav():
         files = uos.listdir("/sd")
         wav_files = []
         for f in files:
-            if f.endswith(".wav") and len(f) == 40:  # UUID + ".wav"
-                parts = f[:-4].split('-')
+            if f.endswith(".wav") and len(f) == 42:  # UUID + ".wav"
+                parts = f[:-6].split('-')
                 if len(parts) == 5 and all(len(p) == l for p, l in zip(parts, [8, 4, 4, 4, 12])):
                     wav_files.append(f)
         return wav_files

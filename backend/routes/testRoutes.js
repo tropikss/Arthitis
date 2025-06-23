@@ -48,6 +48,18 @@ router.post('/', async (req, res) => {
   res.status(201).json({record_id:test.record_id})
 })
 
+router.delete('/id-by-record/:record_id', async (req, res) => {
+  const { record_id } = req.params
+  await db.read()
+  const test = db.data.tests.find(t => t.record_id === record_id)
+  if (!test) {
+    return res.status(404).json({ error: 'Test not found' })
+  }
+  db.data.tests = db.data.tests.filter(t => t.record_id !== record_id)
+  await db.write()
+  res.status(200).json({ id: test.id })
+})
+
 router.delete('/:id', async (req, res) => {
   const id = req.params.id
   const initialLength = db.data.tests.length

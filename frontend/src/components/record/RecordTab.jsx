@@ -54,7 +54,7 @@ return (
                     <div className='w-1/2'>
                         <DisplayRecordTags isRecording={isRecording} onChange={setRecordingTags} recordingTags={recordingTags} />
                     </div>
-                    <div classname="w-1/2">
+                    <div className="w-1/2">
                         <div className='rounded bg-color3 p-2 text-center text-white h-full w-full' >
                             <TestsListComponent recordingSubject={recordingSubject} setDifferentTest={setDifferentTest}/> 
                         </div>

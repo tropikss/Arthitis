@@ -107,14 +107,27 @@ async def handle_stop_recording(service, conn):
     service.filename = None
 
 async def handle_DELETE(service, conn, path):
-    full_path = "/sd/" + path.strip("/")
+    path_R = path+'_R.wav'
+    path_L = path+'_L.wav'
+    full_path_R = "/sd/" + path.strip("/")
+    full_path_L = "/sd/" + path.strip("/")
     try:
-        st = os.stat(full_path)
+        st = os.stat(full_path_R)
         if st[0] & 0o170000 == 0o040000:
-            os.rmdir(full_path)
+            os.rmdir(full_path_R)
         else:
-            os.remove(full_path)
-        await send_status(service, conn, "DELETED " + path.strip("/"))
+            os.remove(full_path_R)
+        await send_status(service, conn, "DELETED " + path_R.strip("/"))
+    except Exception as e:
+        await send_status(service, conn, "ERR:" + str(e))
+
+    try:
+        st = os.stat(full_path_L)
+        if st[0] & 0o170000 == 0o040000:
+            os.rmdir(full_path_L)
+        else:
+            os.remove(full_path_L)
+        await send_status(service, conn, "DELETED " + path_L.strip("/"))
     except Exception as e:
         await send_status(service, conn, "ERR:" + str(e))
 

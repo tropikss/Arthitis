@@ -67,6 +67,21 @@ export function TestsProvider({ children }) {
     return updated;
   }
 
+  async function deleteTestByRecordId(id) {
+    const res = await fetch(`${API_URL}/tests/id-by-record/${id}`, {
+      method: 'DELETE'
+    });
+    if (!res.ok) {
+      console.error('Failed to delete test by record id');
+      return null;
+    } else {
+      console.log(id, ' deleted');
+    }
+    const deleted = await res.json(); // deleted should contain the deleted test, including its id
+    setTests(tests => tests.filter(t => t.id !== deleted.id));
+    return deleted;
+  }
+
   async function compareRecordIds(recordIds) {
     await fetchTests(); // Ensure tests are fetched before comparison
     
@@ -95,7 +110,8 @@ export function TestsProvider({ children }) {
       updateTest,
       fetchTestsBySubject,
       selectedSubjectTests,
-      compareRecordIds
+      compareRecordIds,
+      deleteTestByRecordId
     }}>
       {children}
     </TestsContext.Provider>

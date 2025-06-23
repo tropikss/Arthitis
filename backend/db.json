@@ -51,32 +51,22 @@
   ],
   "tests": [
     {
-      "id": "ee2aebb6-7e4f-4716-b3fd-b5e22cc6e6b7",
-      "record_id": "9ab6a03a-1737-4656-8a9b-fc38eec388bc",
-      "subject_id": "1f6a107c-af04-4fa6-8e8d-e24aa5b3745d",
+      "id": "cb89d77b-d52a-4bcd-b9fb-9c9991e12f96",
+      "record_id": "16d19226-f470-43ca-acbd-abdd03b9909d",
+      "subject_id": "968cc0d5-3ff1-44b3-bc2d-9a8c839431d9",
       "tags": {
-        "inclinaison": 10,
-        "speed": 5,
+        "inclinaison": 0,
+        "speed": 15,
         "weighted": true
       }
     },
     {
-      "id": "8dc2dd6c-7b80-45e0-b451-da11a258c635",
-      "record_id": "53b37c48-8682-468a-87e9-7f3416002f37",
-      "subject_id": "f2a222ac-9d5b-4d82-9776-ac432d365232",
+      "id": "1bc8889c-0d71-4fc3-959a-7aca625984da",
+      "record_id": "2833052a-fcaf-4dd6-a674-e72433e34ac6",
+      "subject_id": "5ed9f18f-e081-4ba7-9cc4-a247ab376ea6",
       "tags": {
         "inclinaison": -10,
-        "speed": 5,
-        "weighted": true
-      }
-    },
-    {
-      "id": "a3ad8ec2-e670-48e7-9b6b-9d4c39e8a729",
-      "record_id": "0689e728-3b07-4c90-bac3-2bc8dfbd9924",
-      "subject_id": "f2a222ac-9d5b-4d82-9776-ac432d365232",
-      "tags": {
-        "inclinaison": -10,
-        "speed": 5,
+        "speed": 10,
         "weighted": true
       }
     }

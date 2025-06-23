@@ -75,11 +75,17 @@ export function BluetoothProvider({ children }) {
       if (value.startsWith('GET_ALL_RECORD FILE:')) {
         // Extraction du nom de fichier
         let fileName = value.split(':')[1];
-        if (fileName.endsWith('.wav')) {
-          fileName = fileName.slice(0, -4);
+        if (fileName.endsWith('_R.wav') || fileName.endsWith('_L.wav')) {
+          fileName = fileName.slice(0, -6);
+
+          setSdRecords(prevRecords => {
+            if (!prevRecords.includes(fileName)) {
+              console.log('Fichier trouvé :', fileName);
+              return [...prevRecords, fileName];
+            }
+            return prevRecords;
+          });
         }
-        console.log('Fichier trouvé :', fileName);
-        setSdRecords(prevRecords => [...prevRecords, fileName]);
       } else if (value.startsWith('GET_ALL_RECORD START')) {
         setGetAllSdRecords(true);
         setSdRecords([]); 
